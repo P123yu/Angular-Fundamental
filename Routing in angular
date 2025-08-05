@@ -4,7 +4,7 @@
 
 // step 1.
 
-import router outlet in app.ts 
+import router outlet in app.ts   =============
 
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
@@ -20,7 +20,7 @@ export class App {
 }
 
 
-// step 2. now in app.routes.ts
+// step 2. now in app.routes.ts  ================
 
 import { Routes } from '@angular/router';
 import { ComponentA } from './component-a/component-a';
@@ -32,7 +32,7 @@ export const routes: Routes = [
 ];
 
 
-// step 3.  in app.html
+// step 3.  in app.html  =================
 
 <router-outlet />
 
@@ -51,9 +51,83 @@ component-b works!
 ng g c component-a
 ng g c component-b
 
+=========================================================================================================================================================================================
 
 
-======================================================================
+====================================================================== How to send path variable in angular while routing 
+
+=== navigate from Component A to B along with url carry data (id) 
+
+
+import { Routes } from '@angular/router';
+import { ComponentA } from './component-a/component-a';
+import { ComponentB } from './component-b/component-b';
+
+export const routes: Routes = [
+  { path: '', component: ComponentA },
+  { path: 'b/:id', component: ComponentB },
+];
+
+
+
+i want here that when i click on a button which is in component A.html then i will navigate to B component with the taking id also which we are displaying in console 
+
+
+// component A.html
+
+<button (click)="goToComponentB()">Go to Component B</button>
+
+
+// component A.ts
+
+import { Component, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-component-a',
+  imports: [],
+  templateUrl: './component-a.html',
+  styleUrl: './component-a.css',
+})
+export class ComponentA implements OnInit {
+  private router = inject(Router);
+
+  ngOnInit(): void {
+    console.log('ComponentA ngOnInit');
+  }
+
+  goToComponentB() {
+    const id = 123;
+    this.router.navigate(['/b', id]);
+  }
+}
+
+
+
+
+//Component  B.ts
+
+import { Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  selector: 'app-component-b',
+  imports: [],
+  templateUrl: './component-b.html',
+  styleUrl: './component-b.css',
+})
+export class ComponentB implements OnInit {
+  private route = inject(ActivatedRoute);
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    console.log('Received ID:', id);
+  }
+}
+
+
+========================================================================================================================================================================================
+
 
 
 
