@@ -1,1 +1,88 @@
 
+// note the flow => Component A will push the data from A towards the shared service ===> Service ===> Component B will pull the data from the sharable service 
+
+
+// create one service   ( which behaves like a sharable service across component )
+
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class PassAtoB {
+  private messageSource = new BehaviorSubject<any>('');
+  currentMessage$ = this.messageSource.asObservable();
+
+  handleMessage(message: any) {
+    this.messageSource.next(message);
+  }
+}
+
+
+// ================================================================================ COMPONENT A ==========================================================================
+
+1. Component A.html
+
+<p>component-a works!</p>
+<button (click)="handleMessage()">send from a to b</button>
+
+
+2. Component A.ts
+
+import { Component, inject, OnInit } from '@angular/core';
+import { PassAtoB } from '../service/pass-ato-b';
+
+@Component({
+  selector: 'app-component-a',
+  imports: [],
+  templateUrl: './component-a.html',
+  styleUrl: './component-a.css',
+})
+export class ComponentA implements OnInit {
+  private passAtoBService = inject(PassAtoB);
+
+  ngOnInit(): void {
+    console.log('ComponentA ngOnInit');
+  }
+
+  handleMessage() {
+    this.passAtoBService.handleMessage('Hello from Component A');
+  }
+}
+
+
+so from Component A ==> we are pushing the data to Shared Service 
+
+
+// now its time to receive te data from shared service
+
+================================================================================= Component B =========================================================================
+
+import { Component, inject, OnInit } from '@angular/core';
+import { PassAtoB } from '../service/pass-ato-b';
+
+@Component({
+  selector: 'app-component-b',
+  imports: [],
+  templateUrl: './component-b.html',
+  styleUrl: './component-b.css',
+})
+export class ComponentB implements OnInit {
+  private passAtoBService = inject(PassAtoB);
+
+  ngOnInit(): void {
+    this.passAtoBService.currentMessage$.subscribe((message) => {
+      console.log('Received message in Component B:', message);
+    });
+  }
+}
+
+
+
+this we can see on console the data which Component A pushed to shared service is automatically visible in Component B because Component B subscribed to that Rxjs shared service
+
+
+
+
+
