@@ -1,0 +1,21 @@
+
+
+it has two step 
+
+suppose our parent component name is app  (app) 
+and child component name is A  
+
+then for connecting child component A to parent component app we have two step 
+
+1. connect A component in app.html 
+
+<app-a></app-a>
+
+2. import Component A in import [] section of app.ts file because i want to inject Component A to Component app
+
+inside app.ts
+
+imports: [RouterOutlet, ComponentA],
+
+
+// and thats it now we can see whatever we are writing inside component A.html it is visible to App.html because A.html is injecting inside App.html
