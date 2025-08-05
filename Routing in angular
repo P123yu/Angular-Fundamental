@@ -1,1 +1,60 @@
 
+========================================================= BASIC ROUTING =============================================================
+# for performing basic routing 
+
+// step 1.
+
+import router outlet in app.ts 
+
+import { Component, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet],
+  templateUrl: './app.html',
+  styleUrl: './app.css',
+})
+export class App {
+  protected readonly title = signal('angular-basics');
+}
+
+
+// step 2. now in app.routes.ts
+
+import { Routes } from '@angular/router';
+import { ComponentA } from './component-a/component-a';
+import { ComponentB } from './component-b/component-b';
+
+export const routes: Routes = [
+  { path: '', component: ComponentA },
+  { path: 'b', component: ComponentB },
+];
+
+
+// step 3.  in app.html
+
+<router-outlet />
+
+
+
+and thats it now on browser by default on localhost:4200  
+
+component-a works!
+
+
+and on localhost:4200/b
+
+component-b works!
+
+
+ng g c component-a
+ng g c component-b
+
+
+
+======================================================================
+
+
+
+
