@@ -1,1 +1,95 @@
 
+                                                                                // CHILD (@Output) =====> PARENT 
+
+// sending data form child to parent in angular 
+
+// COMPONENT B ========================= (child) ==========================================
+
+
+
+// Component B.ts file ============================================================
+
+import { Component, EventEmitter, Output } from '@angular/core';
+
+@Component({
+  selector: 'app-component-b',
+  imports: [],
+  templateUrl: './component-b.html',
+  styleUrl: './component-b.css',
+})
+export class ComponentB {
+  @Output() descriptionGoingFromComponentBtoA = new EventEmitter<any>();
+
+  sendData() {
+    const data = 'Hello from Component B';
+    this.descriptionGoingFromComponentBtoA.emit(data);
+  }
+}
+
+
+// Component B.html file =====================================================
+
+<p>component-b works!</p>
+<button (click)="sendData()">send data from Component B to Component A</button>
+
+
+||
+||
+||
+||
+to
+
+========================================================================================= COMPONENT A (parent) ==========================================================
+
+
+// Component A.ts file =======================
+
+import { Component, OnInit } from '@angular/core';
+import { ComponentB } from '../component-b/component-b';
+
+@Component({
+  selector: 'app-component-a',
+  imports: [ComponentB],
+  templateUrl: './component-a.html',
+  styleUrl: './component-a.css',
+})
+export class ComponentA implements OnInit {
+  description: string = 'Sending data from Component A to Component B';
+
+  constructor() {
+    console.log('ComponentA initialized');
+  }
+
+  ngOnInit(): void {
+    console.log('ComponentA ngOnInit');
+  }
+
+  result: string = '';
+  receiveData(data: string) {
+    console.log('Data received from Component B:', data);    ==> here we are receiving data from B (child) to A (parent) 
+    this.result = data; 
+  }
+}
+
+
+
+// ======================= Component A.html file 
+
+
+<p>component-a works!</p>
+<app-component-b
+  (descriptionGoingFromComponentBtoA)="receiveData($event)"
+></app-component-b>
+Data coming from child to parent it means form component B to A => {{ result }}
+
+
+
+
+
+
+
+
+
+
+
+
