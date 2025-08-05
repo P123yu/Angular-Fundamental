@@ -1,1 +1,91 @@
+ sending data from component A to component B     ( PARENT =====> CHILD (@Input))  
+
+
+
+Use @Input annotation on child component .ts file if we want to pass data from parent to child in angular  ===========================VVI==============================
+
+
+
+// component A  which is parent  ========================================================================
+
+
+COMPONENT A.ts file ===========================================
+
+import { Component, OnInit } from '@angular/core';
+import { ComponentB } from '../component-b/component-b';
+
+@Component({
+  selector: 'app-component-a',
+  imports: [ComponentB],
+  templateUrl: './component-a.html',
+  styleUrl: './component-a.css',
+})
+export class ComponentA implements OnInit {
+  description: string = 'Sending data from Component A to Component B';     ==> i am sending data this data to child component B 
+
+  constructor() {
+    console.log('ComponentA initialized');
+  }
+
+  ngOnInit(): void {
+    console.log('ComponentA ngOnInit');
+  }
+}
+
+
+
+COMPONENT A.html file ==============================================================
+
+<p>component-a works!</p>
+<app-component-b [descriptionComingFromA]="description"></app-component-b>
+
+||
+||
+||
+||
+to 
+
+
+============================================================================================= COMPONENT B =====================================================================
+
+
+COMPONENT B.ts file ==================================================
+
+
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-component-b',
+  imports: [],
+  templateUrl: './component-b.html',
+  styleUrl: './component-b.css'
+})
+export class ComponentB {
+
+  @Input() descriptionComingFromA: string = '';      ==> here this is receiving data coming from Component A
+
+}
+
+
+
+
+COMPONENT B.html file ================================================
+
+<p>component-b works!</p>
+{{ descriptionComingFromA }} <=== and finally in component B we are displating data coming from Component A 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
